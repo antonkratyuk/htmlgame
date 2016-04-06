@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		div{
+			position:absolute;
+			width:500px;
+		    height:500px;
+		}
+		#rightSide { left: 500px; 
+		border-left: 1px solid black }
+		img{
+			position:absolute;
+		}
+	</style>
+	<script>
+		var numberOfFaces = 5;
+		var theLeftSide;
+		function generateFaces(){		
+			theLeftSide = document.getElementById("leftSide");
+			for(var i = 0; i < numberOfFaces; ++i){
+				var img=document.createElement("img");
+	            img.setAttribute("src","http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png");            
+	            img.style.top = (Math.floor(Math.random() * 400)) + "px";
+	            img.style.left = (Math.floor(Math.random() * 400)) + "px";
+	            theLeftSide.appendChild(img);
+			}
+			var theRightSide = document.getElementById("rightSide");
+			var node = theLeftSide.cloneNode(true);
+			node.removeChild(node.lastChild);
+			theRightSide.appendChild(node);
+
+			   			
+			theLeftSide.lastChild.onclick =  function nextLevel(event){
+
+			        event.stopPropagation();
+			        var myNode = document.getElementById("leftSide");
+					var fc = myNode.firstChild;
+
+					while( fc ) {
+					    myNode.removeChild( fc );
+					    fc = myNode.firstChild;
+					}
+					myNode = document.getElementById("rightSide");
+					var fc = myNode.firstChild;
+
+					while( fc ) {
+					    myNode.removeChild( fc );
+					    fc = myNode.firstChild;
+					}
+
+			        numberOfFaces += 5;
+
+			        generateFaces();
+			}
+
+			var theBody = document.getElementsByTagName("body")[0];	 
+			theBody.onclick = function gameOver() {
+
+			    alert("Game Over!");
+			    theBody.onclick = null;
+
+			    theLeftSide.lastChild.onclick = null;
+
+
+			}; 
+
+
+
+		};
+		
+		
+
+	</script>
+</head>
+<body onload = "generateFaces()">
+	<h1>Matching Game</h1>
+	<p>Click on the extra smiling face on the left</p>
+	<div id="leftSide"></div> 
+	<div id="rightSide"></div> 
+</body>
+</html>
